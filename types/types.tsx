@@ -1,0 +1,1 @@
+export type deviceType = 'website' | 'mobile';
