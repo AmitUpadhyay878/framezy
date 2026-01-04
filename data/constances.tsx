@@ -1,3 +1,4 @@
+import { se } from "date-fns/locale";
 import { BitcoinIcon, Bubbles, CardSim, HeartIcon, Plane, ShoppingBag, SquareDashedBottomCodeIcon } from "lucide-react";
 
 export const suggestions = [

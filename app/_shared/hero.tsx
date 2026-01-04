@@ -45,17 +45,20 @@ const Hero = () => {
 
             setLoading(true);
 
+            const projectId = crypto.randomUUID()
+
             // Proceed to create project
             const result = await axios.post('/api/project', {
                 userInput,
                 device,
-                projectId:crypto.randomUUID(),
+                projectId:projectId,
             });
 
             console.log('Project created:', result.data);
             setLoading(false);
 
             // Redirect to the project page
+            router.push(`/project/${projectId}`);
     }
 
 
