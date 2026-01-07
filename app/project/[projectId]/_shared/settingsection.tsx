@@ -13,7 +13,7 @@ type Props = {
 
 const SettingSection = ({projectDetails}:Props) => {
 
-    const[selectedTheme, setSelectedTheme]=React.useState('AMAZON');
+    const[selectedTheme, setSelectedTheme]=React.useState('SHOPIFY');
     const[projectName, setProjectName] = React.useState(projectDetails?.projectName||'');
     const[userNewScreenInput, setUserNewScreenInput]=React.useState<string>('');
 

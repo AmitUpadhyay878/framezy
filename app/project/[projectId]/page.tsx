@@ -38,6 +38,8 @@ const ProjectCanvasPlayground = () => {
     useEffect(()=>{
         if(projectDetails&&screenConfigs&&screenConfigs.length===0){
             generateScreenConfigWithAI();
+        }else if(projectDetails&&screenConfigs&&screenConfigs.length>0){
+            generateScreenUIWithAI()
         }
     },[projectDetails&&screenConfigs]); 
 
@@ -54,6 +56,43 @@ const ProjectCanvasPlayground = () => {
 
             getProjectDetails();
             setLoading(false);
+    }
+
+    const generateScreenUIWithAI= async ()=>{
+            setLoading(true);
+
+            for(let index=0; index<screenConfigs.length; index++){
+                const screen = screenConfigs[index];
+                if(screen.code) continue;
+                setLoadingMsg(`Generating UI for ${screen.screenName}... (${index+1} of ${screenConfigs.length})`);
+                
+                const result = await axios.post('/api/generate-screen-ui',{
+                    projectId: projectId,
+                    screenId: screen?.screenId,
+                    screenName: screen?.screenName,
+                    purpose: screen?.purpose,
+                    screenDescription: screen?.description,
+                });
+                console.log(result?.data);
+             
+                // setScreenConfigs(prev=>{
+                //     const existingIndex = prev.findIndex(s=>s.screenId===screen.screenId);  
+                //     if(existingIndex!==-1){
+                //         const updated = [...prev];
+                //         updated[existingIndex] = {
+                //             ...updated[existingIndex],
+                //             code: result?.data?.code
+                //         }
+                //         return updated;
+                //     }
+                //     return prev;
+                // });
+
+                setScreenConfigs(prev => prev.map((item,i)=>(i===index ? result?.data: item)) );
+            }
+
+            setLoading(false);
+
     }
 
   return (
