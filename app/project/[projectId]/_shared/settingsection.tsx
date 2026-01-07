@@ -3,29 +3,39 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { THEME_NAME_LIST, THEMES } from '@/data/themes'
+import { ProjectType } from '@/types/types'
 import { Camera, Share, Sparkle } from 'lucide-react'
-import React, { use } from 'react'
+import React, { use, useEffect } from 'react'
 
-const SettingSection = () => {
+type Props = {
+    projectDetails: ProjectType | undefined;
+}
 
-    const[selectedTheme, setSelectedTheme]=React.useState('ARORA_INK');
-    const[projectName, setProjectName] = React.useState('');
+const SettingSection = ({projectDetails}:Props) => {
+
+    const[selectedTheme, setSelectedTheme]=React.useState('AMAZON');
+    const[projectName, setProjectName] = React.useState(projectDetails?.projectName||'');
     const[userNewScreenInput, setUserNewScreenInput]=React.useState<string>('');
+
+
+    useEffect(()=>{
+      projectDetails && setProjectName(projectDetails?.projectName||'');
+    },[projectDetails]);
 
   return (
     <div className='w-[300px] h-[90vh] p-5 border-r'>
        <h2 className='font-medium text-lg'>Settings</h2>
        <div className='mt-3'>
-        <h2 className='text-sm mb-1'>Project Name</h2>
-        <Input type='text' onChange={(event)=>setProjectName(event.target.value)} placeholder='project Name'/>
+        <h2 className='text-sm font-bold mb-1'>Project Name</h2>
+        <Input type='text' value={projectName} onChange={(event)=>setProjectName(event.target.value)} placeholder='project Name'/>
        </div>
         <div className='mt-5'>
-        <h2 className='text-sm mb-1'>Generate New Screen</h2>
+        <h2 className='text-sm font-bold mb-1'>Generate New Screen</h2>
         <Textarea onChange={(event)=>setUserNewScreenInput(event.target.value)} placeholder='Enter a prompt to generate screen with AI'/>
         <Button size='sm' className='mt-2 w-full'><Sparkle/> Generate with AI</Button>
        </div>
         <div className='mt-5'>
-        <h2 className='text-sm mb-1'>Themes</h2>
+        <h2 className='text-sm font-bold mb-1'>Themes</h2>
             <div className='h-[220px] overflow-auto'>
                 <div className=''>
                     {
@@ -36,7 +46,7 @@ const SettingSection = () => {
                                     `} key={index}
                                  onClick={()=>setSelectedTheme(theme)}
                                 >
-                                      <h2>{theme}</h2>
+                                      <h3 className='mb-2'>{theme}</h3>
                                       <div className='flex gap-2'>
                                       <div className={`h-4 w-4 rounded-full`} style={{ backgroundColor: THEMES[theme].primary }} />
                                        <div className={`h-4 w-4 rounded-full`} style={{ backgroundColor: THEMES[theme].secondary }} />
